@@ -21,7 +21,7 @@ class TanksGridWorldEnv(gym.Env):
 
     def _default_map(self):
         return np.array([
-            [0, 0, 6, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+            [0, 0, 7, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
             [1, 1, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1],
             [1, 0, 0, 0, 1, 2, 2, 2, 2, 1, 0, 0, 1],
@@ -71,35 +71,34 @@ class TanksGridWorldEnv(gym.Env):
         # 3: metal
         # 4: water
         # 5: tank
-        # 6: bullet
-        # 7: enemy
+        # 6: enemy
+        # 7: bullet
         colors = {
             0: pygame.Color(0, 0, 0),
-            1: pygame.Color(206, 76, 10),
-            2: pygame.Color(132, 211, 17),
+            1: pygame.Color(205, 133, 63),
+            2: pygame.Color(154, 205, 50),
             3: pygame.Color(255, 255, 255),
-            4: pygame.Color(33, 56, 239),
-            5: pygame.Color(255, 154, 57),
-            6: pygame.Color(189, 190, 189),
-            7: pygame.Color(255, 57, 57)
+            4: pygame.Color(100, 149, 237),
+            5: pygame.Color(255, 215, 0),
+            6: pygame.Color(255, 99, 71),
+            7: pygame.Color(169, 169, 169)
         }
         return colors[cell]
 
     def render(self):
         if self._window is None:
             pygame.init()
-            self._window = pygame.display.set_mode((650, 650))
             self._clock = pygame.time.Clock()
+            self._window = pygame.display.set_mode((650, 650))
             pygame.display.set_caption("Tanks Grid World")
 
         for i in range(self._map.shape[0]):
             for j in range(self._map.shape[1]):
-                cell = self._map[i, j]
-                pygame.draw.rect(self._window, self._cell_color(cell), pygame.Rect(j * 50, i * 50, 50, 50))
+                pygame.draw.rect(self._window, self._cell_color(self._map[i, j]), pygame.Rect(j * 50, i * 50, 50, 50))
 
         pygame.event.pump()
         pygame.display.update()
-        self._clock.tick(self.metadata['render_fps'])
+        self._clock.tick(self.metadata["render_fps"])
 
     def close(self):
         if self._window is not None:
